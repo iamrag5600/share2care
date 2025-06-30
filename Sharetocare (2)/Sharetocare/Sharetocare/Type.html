@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Donation Type Selection</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: url('images/typebg (2).jpg') no-repeat center center/cover;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+      position: relative;
+    }
+
+    .user-menu {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .user-menu i {
+      font-size: 26px;
+      color: #333;
+    }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 50px;
+      right: 0;
+      background: #edbd9b;
+      border-radius: 8px;
+      width: 160px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .dropdown a {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      color: rgb(120, 9, 9);
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .dropdown a i {
+      margin-right: 8px;
+    }
+
+    .dropdown a:hover {
+      background: #9e6a62;
+      border-radius: 8px;
+    }
+
+    .bottom-buttons {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 900px;
+      padding: 0 20px;
+      position: absolute;
+      bottom: 30px;
+    }
+
+    .bottom-buttons button {
+      width: 150px;
+      padding: 12px;
+      font-size: 18px;
+      background: #b6786a;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: 0.3s;
+    }
+
+    .bottom-buttons button:hover {
+      background: #c8928a;
+    }
+
+    .disabled {
+      background: #ddd !important;
+      color: #888 !important;
+      cursor: not-allowed !important;
+    }
+
+    @media (max-width: 768px) {
+      .bottom-buttons {
+        flex-direction: row;
+        justify-content: space-around;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- User Menu -->
+  <div class="user-menu" onclick="toggleDropdown()">
+    <i class="fa-solid fa-user-circle"></i>
+    <div class="dropdown" id="dropdown">
+      <a href="view profile.html"><i class="fa-solid fa-user-edit"></i> View Profile</a>
+      <a href="#" onclick="logout()"><i class="fa-solid fa-sign-in-alt"></i> Logout</a>
+    </div>
+  </div>
+
+  <!-- Bottom Buttons -->
+  <div class="bottom-buttons">
+    <button id="donor-btn" onclick="selectRole('donor')">Donate</button>
+    <button id="receiver-btn" onclick="selectRole('receiver')">Receive</button>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const role = urlParams.get('role');
+
+    window.onload = function () {
+      if (role === 'donor') {
+        let receiverBtn = document.getElementById('receiver-btn');
+        receiverBtn.classList.add('disabled');
+        receiverBtn.disabled = true;
+      } else if (role === 'receiver') {
+        let donorBtn = document.getElementById('donor-btn');
+        donorBtn.classList.add('disabled');
+        donorBtn.disabled = true;
+      }
+    }
+
+    function selectRole(role) {
+      const donorBtn = document.getElementById('donor-btn');
+      const receiverBtn = document.getElementById('receiver-btn');
+
+      // Prevent action if button is disabled
+      if ((role === 'donor' && donorBtn.disabled) || (role === 'receiver' && receiverBtn.disabled)) {
+        return;
+      }
+
+      if (role === 'donor') {
+        window.location.href = 'donation.html';
+      } else {
+        window.location.href = 'receiver.html';
+      }
+    }
+
+    function toggleDropdown() {
+      const dropdown = document.getElementById("dropdown");
+      dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+    }
+
+    document.addEventListener("click", function (event) {
+      const dropdown = document.getElementById("dropdown");
+      const userMenu = document.querySelector(".user-menu");
+      if (!userMenu.contains(event.target)) {
+        dropdown.style.display = "none";
+      }
+    });
+
+    function logout() {
+      sessionStorage.clear();
+      window.location.href = "home.html";
+    }
+  </script>
+
+</body>
+</html>

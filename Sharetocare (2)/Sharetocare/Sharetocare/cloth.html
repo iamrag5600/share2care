@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cloth Donation Form</title>
+
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: url('images/clothbg.jpg') no-repeat center center/cover;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      animation: moveBg 8s linear infinite alternate;
+    }
+
+    @keyframes moveBg {
+      0% { background-position: 0% 0%; }
+      100% { background-position: 100% 100%; }
+    }
+
+    .container {
+      width: 90%;
+      max-width: 600px;
+      background: rgb(234, 190, 190);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2), inset 0 -5px 10px rgba(0, 0, 0, 0.15);
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      border-bottom: 8px solid #aa7676;
+      border-right: 8px solid #aa7676;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .container:hover {
+      transform: translate(-50%, -53%) scale(1.02);
+      box-shadow: 0 16px 30px rgba(0, 0, 0, 0.3), inset 0 -6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+      text-align: center;
+      color: #000;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 15px;
+      color: #000;
+    }
+
+    input, select, textarea {
+      width: calc(100% - 22px);
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+      box-sizing: border-box;
+      background-color: rgba(255,255,255,0.85);
+    }
+
+    textarea {
+      height: 80px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 20px;
+      border: none;
+      background: #446f4e;
+      color: white;
+      font-size: 18px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #29a845;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    .message {
+      text-align: center;
+      font-size: 16px;
+      margin-top: 15px;
+      padding: 10px;
+      display: none;
+      border-radius: 5px;
+    }
+
+    .success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    .back-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 1000;
+      text-decoration: none;
+      padding: 5px;
+      background-color: rgba(255, 0, 0, 0.419);
+      border-radius: 50%;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .back-button:hover {
+      background-color: rgba(0, 0, 0, 0.5);
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+
+<a href="donation.html" class="back-button" title="Go Back">
+  <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+      <path d="M15 18L9 12L15 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</a>
+
+<div class="container">
+  <h1>Cloth Donation</h1>
+
+  <label for="fullName">Full Name:</label>
+  <input type="text" id="fullName" placeholder="Enter your full name" required>
+
+  <label for="email">Email:</label>
+  <input type="email" id="email" placeholder="Enter your email" required>
+
+  <label for="clothType">Type of Clothes:</label>
+  <select id="clothType">
+    <option value="men">Men</option>
+    <option value="women">Women</option>
+    <option value="kids">Kids</option>
+    <option value="unisex">Unisex</option>
+  </select>
+
+  <label for="quantity">Quantity (approx. number of items):</label>
+  <input type="number" id="quantity" placeholder="Enter quantity" required>
+
+  <label for="condition">Condition:</label>
+  <select id="condition">
+    <option value="new">New</option>
+    <option value="gently-used">Gently Used</option>
+    <option value="used">Used</option>
+  </select>
+
+  <label for="location">Enter Address:</label>
+  <textarea id="location" placeholder="Enter full address..." required></textarea>
+
+  <button onclick="submitClothDonation()">Submit Donation</button>
+  <div id="message" class="message"></div>
+</div>
+
+
+<script>
+  function submitClothDonation() {
+    let fullName = document.getElementById("fullName").value.trim();
+    let email = document.getElementById("email").value.trim();
+    let clothType = document.getElementById("clothType").value;
+    let quantity = document.getElementById("quantity").value.trim();
+    let condition = document.getElementById("condition").value;
+    let location = document.getElementById("location").value.trim();
+    let messageBox = document.getElementById("message");
+
+    if (!fullName || !email || !quantity || !location) {
+      showMessage("Please fill all required fields.", "error");
+      return;
+    }
+
+    let formData = {
+      full_name: fullName,             // ✅ matches backend
+      email: email,
+      cloth_type: clothType,           // ✅ matches backend
+      quantity: quantity,
+      condition_status: condition,     // ✅ matches backend
+      location: location
+    };
+
+    fetch("http://127.0.0.1:5000/donate-cloth", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        showMessage("Cloth donation submitted successfully!", "success");
+
+        // Clear the form
+        document.getElementById("fullName").value = "";
+        document.getElementById("email").value = "";
+        document.getElementById("quantity").value = "";
+        document.getElementById("location").value = "";
+      } else {
+        showMessage("Error: " + data.message, "error");
+      }
+    })
+    .catch(error => {
+      console.error("Error:", error);
+      showMessage("Server error! Please try again later.", "error");
+    });
+  }
+
+  function showMessage(msg, type) {
+    let messageBox = document.getElementById("message");
+    messageBox.textContent = msg;
+    messageBox.className = `message ${type}`;
+    messageBox.style.display = "block";
+
+    setTimeout(() => {
+      messageBox.style.display = "none";
+    }, 3000);
+  }
+</script>
+
+</body>
+</html>

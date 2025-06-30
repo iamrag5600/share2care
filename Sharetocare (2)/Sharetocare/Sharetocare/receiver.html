@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Receiver Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: url('images/reciever1.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    .container {
+      position: relative;
+      background: linear-gradient(to right, #dcc4be, #ffd5c0);;
+      border: 5px solid #d19191;
+      transform: skew(-2deg);
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 40px 30px;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      animation: fadeSlideIn 0.8s ease-out;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .container:hover {
+      transform: translateY(-5px) skew(-2deg);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .container * {
+      transform: skew(2deg); /* cancel skew for children */
+    }
+
+    @keyframes fadeSlideIn {
+      0% {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    select, button, input, textarea {
+      display: block;
+      width: 80%;
+      margin: 10px auto;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background: #3498db;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #2980b9;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid #999;
+      padding: 8px;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    th {
+      background: #3498db;
+      color: white;
+    }
+
+    td {
+      background: #f9f9f9;
+    }
+
+    .back-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 1000;
+      text-decoration: none;
+      padding: 5px;
+      background-color: rgba(0, 0, 0, 0.3);
+      border-radius: 50%;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .back-button:hover {
+      background-color: rgba(0, 0, 0, 0.5);
+      transform: scale(1.1);
+    }
+
+    #loading, #noResults {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    #noResults {
+      color: #c0392b;
+      font-weight: bold;
+    }
+
+    .request-form {
+      background: #e9c6b7;
+      margin-top: 30px;
+      padding: 15px;
+      border-radius: 10px;
+    }
+    .success-message {
+            background-color: green;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 18px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        
+        .error-message {
+            background-color: red;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 18px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+    .selected-row {
+      background-color: #ffedcc !important;
+      font-weight: bold;
+      transition: background 0.3s ease;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .quote-icon {
+      position: absolute;
+      font-size: 28px;
+      background-color: #f18080;
+      color: black;
+      border-radius: 50%;
+      padding: 5px;
+      width: 35px;
+      height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      z-index: 2;
+    }
+
+    .quote-icon.top {
+      top: -20px;
+      right: -20px;
+    }
+
+    .quote-icon.bottom {
+      bottom: -20px;
+      left: -20px;
+    }
+
+  </style>
+</head>
+<body>
+
+<a href="Type.html" class="back-button" title="Go Back">
+  <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+    <path d="M15 18L9 12L15 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</a>
+
+<div class="container">
+  <span class="quote-icon top">❝</span>
+  <h1>Receiver Search</h1>
+  <form id="searchForm">
+    <select id="category" required>
+      <option value="">-- Select Category --</option>
+      <option value="food">Food</option>
+      <option value="books">Books</option>
+      <option value="blood">Blood</option>
+      <option value="stationery">Stationery</option>
+      <option value="clothes">Clothes</option>
+    </select>
+    <button type="submit">Get Requests</button>
+  </form>
+
+  <div id="loading" style="display: none;">Loading data, please wait...</div>
+  <div id="noResults" style="display: none;">No requests found for this category.</div>
+
+  <table id="resultsTable" style="display: none;">
+    <thead id="tableHead"></thead>
+    <tbody id="tableBody"></tbody>
+  </table>
+
+  <div class="request-form" id="requestForm" style="display: none;">
+    <h2>Request This Donation</h2>
+    <form id="submitRequestForm">
+      <input type="text" id="item" name="item" placeholder="Enter Item" required>
+
+      <!-- Donation details, such as donor name and email -->
+      <label for="donor_name">Donor name:</label>
+      <input type="text" id="donor_name" name="donor_name" required><br><br>
+
+      <label for="email">Donor Email:</label>
+      <input type="email" id="email" name="email" required><br><br>
+    
+      <input type="text" id="receiverName" name="receiverName" placeholder="Your Name" required>
+      <input type="text" id="receivercategory" name="Category" placeholder="Category" required>
+      <input type="text" id="receiverContact" name="receiverContact" placeholder="Your Contact Number" required>
+      <input type="text" id="receiverAddress" name="receiverAddress" placeholder="Your Address" required>
+      <textarea id="reason" name="reason" placeholder="Reason for Request" required></textarea>
+      <button type="submit">Submit Request</button>
+    </form>
+    <div id="messageBox"></div>
+  </div>
+  <span class="quote-icon bottom">❞</span>
+</div>
+<script>
+  // Handle Search Form Submission
+  document.getElementById("searchForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const category = document.getElementById("category").value.trim();
+    if (!category) return;
+
+    // Reset the UI
+    document.getElementById("resultsTable").style.display = "none";
+    document.getElementById("tableHead").innerHTML = "";
+    document.getElementById("tableBody").innerHTML = "";
+    document.getElementById("noResults").style.display = "none";
+    document.getElementById("loading").style.display = "block";
+
+    fetch("http://localhost:5000/get-requests", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ category: category }),
+    })
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("loading").style.display = "none";
+
+        if (!data || data.length === 0) {
+          document.getElementById("noResults").style.display = "block";
+          return;
+        }
+
+        const tableHead = document.getElementById("tableHead");
+        const tableBody = document.getElementById("tableBody");
+        const headers = Object.keys(data[0]);
+
+        // Create table headers
+        const headRow = document.createElement("tr");
+        headers.forEach(header => {
+          const th = document.createElement("th");
+          th.textContent = header.charAt(0).toUpperCase() + header.slice(1);
+          headRow.appendChild(th);
+        });
+        tableHead.appendChild(headRow);
+
+        // Create table rows
+        data.forEach(row => {
+          const tr = document.createElement("tr");
+          headers.forEach(header => {
+            const td = document.createElement("td");
+            td.textContent = row[header];
+            tr.appendChild(td);
+          });
+
+          // Auto-fill form on row click
+          tr.addEventListener("click", function () {
+            document.getElementById("donor_name").value = row["full_name"] || "";
+            document.getElementById("email").value = row["email"] || "";
+            document.getElementById("requestForm").style.display = "block";
+
+            // Highlight row
+            const allRows = tableBody.querySelectorAll("tr");
+            allRows.forEach(r => r.classList.remove("selected-row"));
+            tr.classList.add("selected-row");
+          });
+
+          tableBody.appendChild(tr);
+        });
+
+        document.getElementById("resultsTable").style.display = "table";
+      })
+      .catch(error => {
+        document.getElementById("loading").style.display = "none";
+        console.error("Error:", error);
+        alert("Error fetching data. Check console for details.");
+      });
+  });
+  
+
+  // Handle Request Form Submission
+  document.getElementById("submitRequestForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const formData = {
+      item: document.getElementById("item").value.trim(),
+      donorName: document.getElementById("donor_name").value.trim(),
+      donorEmail: document.getElementById("email").value.trim(),
+      category: document.getElementById("receivercategory").value.trim(),
+      receiverName: document.getElementById("receiverName").value.trim(),
+      receiverContact: document.getElementById("receiverContact").value.trim(),
+      receiverAddress: document.getElementById("receiverAddress").value.trim(),
+      reason: document.getElementById("reason").value.trim(),
+    };
+
+    // Validation
+    if (!formData.item || !formData.donorName || !formData.donorEmail || !formData.category ||
+        !formData.receiverName || !formData.receiverContact || !formData.receiverAddress || !formData.reason) {
+      alert("Please fill in all fields.");
+      return;
+    }
+    const messageBox = document.getElementById('messageBox');
+
+    // Send to backend
+    fetch("http://localhost:5000/submit-request", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then(data => {
+        const box = document.getElementById("messageBox");
+        box.textContent = data.message || (data.success ? "Request submitted successfully!" : "Error submitting request!");
+        box.className = data.success ? "success" : "error";
+        box.style.display = "block";
+      })
+      .catch(error => {
+        const box = document.getElementById("messageBox");
+        box.textContent = "An error occurred. Please try again later.";
+        box.className = "error";
+        box.style.display = "block";
+        console.error("Fetch error:", error);
+      });
+  });
+</script>
+</body>
+</html>

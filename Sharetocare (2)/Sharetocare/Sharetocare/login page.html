@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Donation Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('images/Login.jpg') no-repeat center center fixed;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            justify-content: end;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding-right: 100px;
+        }
+
+        .container {
+            background: #f7f7c3;
+            border-bottom: 7px solid #83831d;
+            border-right: 7px solid #83831d;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+            width: 340px;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .input-box {
+            text-align: left;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .input-box label {
+            font-size: 14px;
+            color: #555;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .input-box input {
+            width: 92%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            background: #f8f8f8;
+            color: #333;
+            outline: none;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 38px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #007bff;
+        }
+
+        .toggle-password:hover {
+            color: #0056b3;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #28a745;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #218838;
+        }
+
+        .signup-link {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .signup-link a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+            }
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <form id="login-form">
+            <div class="input-box">
+                <select name="usertype" id="usertype" required>
+
+                    <option value="">Select Role</option>
+                    <option value="donor">Donor</option>
+                    <option value="receiver">receiver</option>
+                </select>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            </div>
+            <div class="input-box">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                <span class="toggle-password" onclick="togglePassword('password')">Show</span>
+            </div>
+            <button type="submit" class="btn">Login</button>
+            <p class="signup-link">Don't have an account? <a href="signup.html">Sign Up</a></p>
+            <p class="error-message" id="error-message"></p>
+        </form>
+    </div>
+    <script>
+        function togglePassword(fieldId) {
+            var field = document.getElementById(fieldId);
+            var toggleBtn = field.nextElementSibling;
+            if (field.type === "password") {
+                field.type = "text";
+                toggleBtn.innerText = "Hide";
+            } else {
+                field.type = "password";
+                toggleBtn.innerText = "Show";
+            }
+        }
+    
+        document.getElementById("login-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            
+            let usertype = document.getElementById("usertype").value;
+            let email = document.getElementById("email").value;
+            let password = document.getElementById("password").value;
+            let errorMessage = document.getElementById("error-message");
+    
+            if (!usertype || !email || !password) {
+                errorMessage.innerText = "Please fill in all fields.";
+                return;
+            }
+    
+            // Show loading message
+            errorMessage.innerText = "Logging in... please wait.";
+    
+            fetch("http://127.0.0.1:5000/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({usertype: usertype, email: email, password: password })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok. Status code: " + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.message.toLowerCase().includes("successful")) {
+                    alert("✅ Login successful! Redirecting...");
+                    console.log("✅ Redirecting to Type.html...");
+                    setTimeout(() => {
+                        // Redirect directly using selected usertype
+                        window.location.href = `Type.html?role=${usertype}`;
+                    }, 1500);
+                } else {
+                    errorMessage.innerText = data.message;
+                    console.error("❌ Login failed:", data.message);
+                }
+            })
+            .catch(error => {
+                errorMessage.innerText = "Something went wrong!";
+                console.error("❌ Fetch error:", error);
+            });
+        });
+    </script>
+    
+</body>
+</html>

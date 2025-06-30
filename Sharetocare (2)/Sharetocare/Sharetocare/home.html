@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShareToCare - Home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        /* General Styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333333;
+            height: 100vh;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 50px;
+            background:#edbda1; /* Muted Sky Blue */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333333;
+        }
+
+        /* User Icon */
+        .user-container {
+            position: relative;
+            cursor: pointer;
+            z-index: 1002;
+        }
+
+        .user-icon {
+            font-size: 26px;
+            color: #333333;
+        }
+
+        /* Dropdown */
+        .dropdown {
+            position: absolute;
+            right: 0;
+            top: 40px;
+            background: #9b5f58; /* Muted Lavender */
+            width: 160px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            display: none;
+            text-align: center;
+            z-index: 1001;
+        }
+
+        .dropdown a {
+            display: block;
+            padding: 12px;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .dropdown a:hover {
+            background: #9e6a62;
+            border-radius: 8px;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 100px 20px;
+            color: #333333;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-top: 10px;
+            font-weight: 400;
+        }
+
+        .btn {
+            margin-top: 20px;
+            padding: 14px 28px;
+            background: #ad625d; /* Soft Teal */
+            color: #ffffff;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: 0.3s;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background: #bd7570;
+        }
+
+        /* Smooth transition */
+        * {
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Fade In Animation */
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero {
+            animation: fadeInUp 1s ease forwards;
+        }
+
+        /* Floating Icon Animation (optional for visuals on background) */
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        .floating-icon {
+            animation: float 3s ease-in-out infinite;
+            position: absolute;
+            z-index: 0;
+            opacity: 0.5;
+        }
+
+        /* Example positioning (optional, customize as per image) */
+        .icon1 {
+            top: 10%;
+            left: 8%;
+        }
+        .icon2 {
+            bottom: 15%;
+            right: 10%;
+        }
+
+        /* Button Animation */
+        .btn {
+            transition: all 0.3s ease;
+            transform: scale(1);
+        }
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Shimmer effect */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%);
+            z-index: 0;
+            pointer-events: none;
+            animation: shimmer 8s infinite;
+        }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .logo {
+            animation: fadeInUp 1.2s ease forwards;
+        }
+
+        .user-icon {
+            transition: transform 0.3s ease;
+        }
+        .user-icon:hover {
+            transform: rotate(10deg) scale(1.1);
+        }
+
+        .bg-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: fill;
+            z-index: -2;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(255, 245, 240, 0.4); /* Slight tint */
+            z-index: -1;
+        }
+
+        .btn-circle {
+            width: 50px;
+            height: 50px;
+            background: #ad625d;
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 22px;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: 0.3s ease-in-out;
+        }
+        .btn-circle:hover {
+            background: #bd7570;
+            transform: rotate(20deg) scale(1.1);
+        }
+
+        .btn {
+            padding: 14px 36px;
+            background: rgba(255, 201, 201, 0.15);
+            color: rgb(0, 0, 0);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50px;
+            backdrop-filter: blur(8px);
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.3s ease;
+        }
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <video autoplay muted loop playsinline class="bg-video">
+        <source src="images/bg1.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <div class="overlay"></div>
+
+    <div class="navbar">
+        <div class="logo">Share2Care</div>
+        <div class="user-container" onclick="toggleDropdown()">
+            <i class="fa-solid fa-user-circle user-icon"></i>
+            <div class="dropdown" id="dropdown">
+                <a href="login page.html">Login</a>
+                <a href="Signup.html">Sign Up</a>
+            </div>
+        </div>
+    </div>
+  
+    <!-- Hero Section -->
+    <div class="hero">
+        <h1>Welcome to Share2Care</h1>
+        <p>Join us in making the world a better place!</p>
+        <a href="Signup.html" class="btn">Get Started</a>
+        <a href="Signup.html" class="btn-circle"><i class="fa fa-arrow-right"></i></a>
+    </div>
+
+    
+
+    <script>
+        function toggleDropdown() {
+            var dropdown = document.getElementById("dropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        }
+
+        document.addEventListener("click", function(event) {
+            var userContainer = document.querySelector(".user-container");
+            var dropdown = document.getElementById("dropdown");
+
+            if (!userContainer.contains(event.target)) {
+                dropdown.style.display = "none";
+            }
+        });
+    </script>
+
+</body>
+</html>

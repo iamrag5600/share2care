@@ -1,0 +1,336 @@
+<style>
+    /* General Styles */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+        background: #ffefda;
+        color: rgb(1, 1, 1);
+        text-align: center;
+    }
+
+    /* Donation Section */
+    .donation_categories {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+        padding: 50px 20px;
+    }
+
+    .card-wrapper {
+        display: flex;
+        align-items: center;
+        width: 80%;
+        max-width: 1000px;
+        justify-content: center;
+        position: relative;
+        margin-bottom: 30px;
+    }
+
+    /* Image Box (Smaller Square) */
+    .image-box {
+        width: 30%;
+        height: 250px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(164, 80, 80, 0.1);
+        border-radius: 10px;
+        transition: transform 0.3s ease-in-out, background 0.3s;
+    }
+
+    .image-box:hover {
+        transform: scale(1.05);
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    .card-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+    /* Content Box (Wider Rectangle) */
+    .content-box {
+        width: 65%;
+        height: 250px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 20px;
+        background: #5809091a;
+        border-radius: 10px;
+        transition: transform 0.3s ease-in-out, background 0.3s;
+    }
+
+    .content-box:hover {
+        transform: scale(1.05);
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    .donate_btn {
+        background: #9e6a62;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        border-radius: 5px;
+        transition: 0.3s;
+        margin-top: 20px;
+    }
+
+    .donate_btn:hover {
+        background: darkred;
+    }
+
+    /* Alternate Card Styling */
+    .card-wrapper:nth-child(even) {
+        flex-direction: row-reverse;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .card-wrapper {
+            flex-direction: column !important;
+            width: 100%;
+        }
+
+        .image-box, .content-box {
+            width: 90%;
+            height: auto;
+        }
+
+        .card-img {
+            height: 200px;
+        }
+    }
+
+    .back-button {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        z-index: 1000;
+        text-decoration: none;
+        padding: 5px;
+        background-color: rgba(0, 0, 0, 0.3);
+        border-radius: 50%;
+        transition: background 0.3s, transform 0.2s;
+    }
+
+    .back-button:hover {
+        background-color: rgba(0, 0, 0, 0.5);
+        transform: scale(1.1);
+    }
+    .card-wrapper:hover .content-box h2 {
+        transform: scale(1.05);
+    }
+
+    .donate_btn {
+        transition: transform 0.3s, background-color 0.3s;
+    }
+
+    .card-wrapper:hover .donate_btn {
+        transform: scale(1.1);
+    }
+
+    .content-box h2 {
+    transition: transform 0.3s;
+    }
+
+    .card-wrapper:hover .image-box,
+    .card-wrapper:hover .content-box {
+        animation: float 2s infinite ease-in-out;
+    }
+
+    @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-6px); }
+        100% { transform: translateY(0px); }
+    }
+
+    .card-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 80%;
+    max-width: 1000px;
+    justify-content: center;
+    position: relative;
+    margin-bottom: 30px;
+    }
+
+/* Image Box (standalone) */
+    .image-box {
+        width: 30%;
+        height: 250px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        box-shadow: 0 0 10px rgba(164, 80, 80, 0.3);
+        transition: 0.4s ease-in-out;
+        border: 2px solid transparent;
+    }
+
+    .image-box:hover {
+        transform: scale(1.05) rotate(-1deg);
+        border-color: #ffafbd;
+        box-shadow: 0 10px 30px rgba(255, 175, 189, 0.4);
+    }
+
+    /* Content Box (standalone) */
+    .content-box {
+        width: 65%;
+        height: 250px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        box-shadow: 0 0 10px rgba(88, 9, 9, 0.2);
+        transition: 0.4s ease-in-out;
+        border: 2px solid transparent;
+    }
+
+    .content-box:hover {
+        transform: scale(1.05) rotate(1deg);
+        border-color: #fbc2eb;
+        box-shadow: 0 10px 30px rgba(251, 194, 235, 0.4);
+    }
+
+    @media (max-width: 768px) {
+        .card-wrapper {
+            flex-direction: column;
+            gap: 30px; /* smaller vertical gap for mobile view */
+        }
+    }
+
+    /* Animation styles */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(40px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-in {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+
+    .animate-in.visible {
+        animation: fadeInUp 0.8s ease-out forwards;
+    }
+
+    /* Optional: stylish line between boxes */
+    .separator {
+        width: 30px;
+        height: 3px;
+        background: linear-gradient(to right, #f97373, #fcd3c4);
+        margin: 0 10px;
+        border-radius: 5px;
+    }
+
+</style>
+
+<!-- Donation Categories -->
+<section class="donation_categories">
+    
+    <!-- Food Donation (Image Left) -->
+    <div class="card-wrapper">
+        <div class="image-box">
+            <img src="images/food.jpg" alt="Food Donation" class="card-img">
+        </div>
+        <div class="content-box">
+            <div>
+                <h2>Food Donation</h2>
+                <p>Provide meals for those in need.</p>
+                <button class="donate_btn" onclick="window.location.href='food_donation.html';">Donate Now</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Clothes Donation (Image Right) -->
+    <div class="card-wrapper">
+        <div class="image-box">
+            <img src="images/blood.png" alt="Clothes Donation" class="card-img">
+        </div>
+        <div class="content-box">
+            <div>
+                <h2>Blood Donation</h2>
+                <p>Share warmth by donating clothes.</p>
+                <button class="donate_btn" onclick="window.location.href='blood.html';">Donate Now</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Education Support (Image Left) -->
+    <div class="card-wrapper">
+        <div class="image-box">
+            <img src="images/cloth.jpg" alt="Education Support" class="card-img">
+        </div>
+        <div class="content-box">
+            <div>
+                <h2>Cloth Donation</h2>
+                <p>Dress lives with kindness!</p>
+                <button class="donate_btn" onclick="window.location.href='cloth.html';">Donate Now</button>
+            </div>
+        </div>
+    </div>
+    <!-- Education Support (Image Left) -->
+    <div class="card-wrapper">
+        <div class="image-box">
+            <img src="images/eg.jpg" alt="Education Support" class="card-img">
+        </div>
+        <div class="content-box">
+            <div>
+                <h2>Books and Stationary</h2>
+                <p>Donate. Educate. Empower. Grow.</p>
+                <button class="donate_btn" onclick="window.location.href='book.html';">Donate Now</button>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<body>
+    <a href="Type.html" class="back-button" title="Go Back">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+            <path d="M15 18L9 12L15 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </a>
+    
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.2
+        });
+    
+        document.querySelectorAll('.animate-in').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+    
+</body>

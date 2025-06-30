@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Donation Request</title>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: url('images/bloodbg.png') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+      width: 90%;
+      max-width: 600px;
+      background: linear-gradient(135deg, #ffe0e9, #ffb7b7);
+      padding: 40px;
+      border-radius: 15px;
+      position: absolute;
+      left: 10%;
+      top: 50%;
+      transform: translateY(-50%);
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+      border-bottom: 8px solid #cd567d;
+      border-left: 9px solid #cd567d;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15), inset 0 -6px 10px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+            color: rgb(0, 0, 0);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            border: none;
+            background: #d9534f;
+            color: white;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #c9302c;
+        }
+
+        .message {
+            text-align: center;
+            font-size: 16px;
+            margin-top: 15px;
+            padding: 10px;
+            display: none;
+            border-radius: 5px;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            text-decoration: none;
+            padding: 5px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .back-button:hover {
+            background-color: rgba(0, 0, 0, 0.5);
+            transform: scale(1.1);
+        }
+
+        .blood-drops {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .drop {
+      position: absolute;
+      width: 12px;
+      height: 20px;
+      background: crimson;
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      animation: fall 5s linear infinite;
+      opacity: 0.7;
+    }
+
+    @keyframes fall {
+      0% { top: -20px; transform: translateX(0) scale(1); opacity: 0; }
+      50% { opacity: 1; }
+      100% { top: 100vh; transform: translateX(50px) scale(0.8); opacity: 0; }
+    }
+
+    .drop:nth-child(1) { left: 10%; animation-delay: 0s; }
+    .drop:nth-child(2) { left: 30%; animation-delay: 1.5s; }
+    .drop:nth-child(3) { left: 50%; animation-delay: 3s; }
+    .drop:nth-child(4) { left: 70%; animation-delay: 2s; }
+    .drop:nth-child(5) { left: 85%; animation-delay: 4s; }
+
+
+
+    </style>
+
+</head>
+<body>
+
+    <a href="donation.html" class="back-button" title="Go Back">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+            <path d="M15 18L9 12L15 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </a>
+
+    <div class="container">
+        <h1>Request Blood Donation</h1>
+
+        <label for="fullName">Full Name:</label>
+        <input type="text" id="fullName" placeholder="Enter your name" required>
+        <label for="email">Email:</label>
+        <input type="email" id="email" placeholder="Enter your email" required>
+
+        <label for="bloodType">Blood Type:</label>
+        <select id="bloodType" required>
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+        </select>
+
+        <label for="quantity">Quantity (Units):</label>
+        <input type="number" id="quantity" placeholder="Enter quantity" required>
+
+        <label for="hospital">Hospital/Location:</label>
+        <input type="text" id="hospital" placeholder="Enter hospital or address" required>
+
+        <label for="neededBy">Needed By (Date & Time):</label>
+        <input type="datetime-local" id="neededBy" required>
+
+        <button onclick="submitBloodRequest()">Submit Request</button>
+        <span id="loading">Submitting...</span>
+
+        <div id="message" class="message"></div>
+    </div>
+
+    <script>
+        let timeoutId;
+    
+        function submitBloodRequest() {
+            let fullName = document.getElementById("fullName").value.trim();
+            let email = document.getElementById("email").value.trim(); // ✅ New line
+            let bloodType = document.getElementById("bloodType").value;
+            let quantity = document.getElementById("quantity").value.trim();
+            let hospital = document.getElementById("hospital").value.trim();
+            let neededBy = document.getElementById("neededBy").value;
+    
+            let submitBtn = document.querySelector("button");
+            let loading = document.getElementById("loading");
+    
+            if (!fullName || !email || !quantity || !hospital || !neededBy) {
+                showMessage("Please fill all required fields.", "error");
+                return;
+            }
+    
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Submitting...";
+            loading.style.display = "block";
+    
+            let formData = {
+                fullName: fullName,
+                email: email, // ✅ Added email here
+                bloodType: bloodType,
+                quantity: quantity,
+                hospital: hospital,
+                neededBy: neededBy
+            };
+    
+            fetch("http://127.0.0.1:5000/submit_blood_request", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                submitBtn.disabled = false;
+                submitBtn.textContent = "Submit Request";
+                loading.style.display = "none";
+    
+                if (data.success) {
+                    showMessage("Blood donation request submitted successfully!", "success");
+                    document.getElementById("fullName").value = "";
+                    document.getElementById("email").value = ""; // ✅ Clear email field
+                    document.getElementById("quantity").value = "";
+                    document.getElementById("hospital").value = "";
+                    document.getElementById("neededBy").value = "";
+                } else {
+                    showMessage("Error: " + data.message, "error");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                submitBtn.disabled = false;
+                submitBtn.textContent = "Submit Request";
+                loading.style.display = "none";
+                showMessage("Server error! Please try again later.", "error");
+            });
+        }
+    
+        function showMessage(msg, type) {
+            let messageBox = document.getElementById("message");
+            clearTimeout(timeoutId);
+            messageBox.textContent = msg;
+            messageBox.className = `message ${type}`;
+            messageBox.style.display = "block";
+    
+            timeoutId = setTimeout(() => {
+                messageBox.style.display = "none";
+            }, 3000);
+        }
+    </script>
+    <div class="blood-drops">
+        <div class="drop"></div>
+        <div class="drop"></div>
+        <div class="drop"></div>
+        <div class="drop"></div>
+        <div class="drop"></div>
+      </div>
+    
+    
+</body>
+</html>

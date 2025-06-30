@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - Donation Website</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        body {
+          font-family: 'Poppins', sans-serif;
+          background: url('images/bgg.jpg') no-repeat center center fixed;
+          background-size: cover;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          margin: 0;
+          position: relative;
+          overflow: hidden;
+        }
+    
+        .container {
+          background:#f4d4b7;
+          padding: 20px 60px;
+          width: 500px;
+          position: relative;
+          left: 280px;
+          z-index: 2;
+        }
+    
+        h2 {
+          margin-bottom: 20px;
+          color: #333;
+          text-align: center;
+        }
+    
+        .input-box {
+          margin-bottom: 15px;
+          position: relative;
+        }
+    
+        .input-box label {
+          font-size: 14px;
+          color: #333;
+          display: block;
+          margin-bottom: 5px;
+        }
+    
+        .input-box input,
+        .input-box select {
+          width: 100%;
+          padding: 10px 10px 10px 35px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          font-size: 14px;
+          background: #f8f8f8;
+          color: #333;
+          outline: none;
+        }
+    
+        .input-box i {
+          position: absolute;
+          left: 10px;
+          top: 37px;
+          color: #888;
+        }
+    
+        .error-message {
+          color: red;
+          font-size: 12px;
+          display: none;
+        }
+    
+        .toggle-password {
+          position: absolute;
+          right: 10px;
+          top: 37px;
+          cursor: pointer;
+          font-size: 14px;
+          color: #007bff;
+        }
+    
+        .toggle-password:hover {
+          color: #0056b3;
+        }
+    
+        .btn {
+          width: 100%;
+          padding: 10px;
+          border: none;
+          border-radius: 5px;
+          background-color: #28a745;
+          color: white;
+          font-size: 16px;
+          cursor: pointer;
+          transition: background 0.3s;
+          position: relative;
+        }
+    
+        .btn:hover {
+          background-color: #218838;
+        }
+    
+        .btn:disabled {
+          background-color: #6c757d;
+          cursor: not-allowed;
+        }
+    
+        .btn .spinner {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          border: 2px solid transparent;
+          border-top: 2px solid white;
+          border-radius: 50%;
+          width: 20px;
+          height: 20px;
+          animation: spin 1s linear infinite;
+          display: none;
+        }
+    
+        .login-link {
+          margin-top: 10px;
+          font-size: 14px;
+          text-align: center;
+          color: #555;
+        }
+    
+        .login-link a {
+          color: #007bff;
+          text-decoration: none;
+        }
+    
+        .login-link a:hover {
+          text-decoration: underline;
+        }
+    
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+    
+        @media (max-width: 768px) {
+          .container {
+            width: 90%;
+            padding: 30px;
+          }
+        }
+    
+        .particles {
+          position: fixed;
+          top: 0; left: 0;
+          width: 100%;
+          height: 100%;
+          pointer-events: none;
+          z-index: 3;
+          overflow: hidden;
+          pointer-events: none;
+        }
+    
+        .particles span {
+          position: absolute;
+          display: block;
+          width: 10px;
+          height: 10px;
+          background: rgba(255, 0, 0, 0.3);
+          border-radius: 50%;
+          animation: floatUp 10s linear infinite;
+        }
+    
+        .particles span:nth-child(1) { left: 20%; animation-delay: 0s; }
+        .particles span:nth-child(2) { left: 40%; animation-delay: 2s; }
+        .particles span:nth-child(3) { left: 60%; animation-delay: 4s; }
+        .particles span:nth-child(4) { left: 80%; animation-delay: 6s; }
+        .particles span:nth-child(5) { left: 50%; animation-delay: 1s; }
+    
+        @keyframes floatUp {
+          0% { bottom: -10px; transform: translateX(0); }
+          50% { transform: translateX(20px); }
+          100% { bottom: 100%; transform: translateX(-20px); }
+        }
+    
+        @media (max-width: 768px) {
+          .container {
+            width: 90%;
+            padding: 30px;
+          }
+        }
+    
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            text-decoration: none;
+            padding: 5px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            transition: background 0.3s, transform 0.2s;
+        }
+    
+        .back-button:hover {
+            background-color: rgba(0, 0, 0, 0.5);
+            transform: scale(1.1);
+        }
+      </style>
+</head>
+<body>
+
+    <div class="particles">
+        <span>O</span><span>N</span><span>T</span><span>E</span><span>A</span><span>D</span>
+    </div>
+
+    <a href="home.html" class="back-button" title="Go Back">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+            <path d="M15 18L9 12L15 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </a>
+
+    <div class="container">
+        <h2>Sign In</h2>
+        <form id="registerForm">
+            <div class="input-box">
+                <label for="username">Username</label>
+                <i class="fa fa-user"></i>
+                <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                <div class="error-message" id="usernameError"></div>
+            </div>
+            <div class="input-box">
+                <label for="email">Email ID</label>
+                <i class="fa fa-envelope"></i>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                <div class="error-message" id="emailError"></div>
+            </div>
+            <div class="input-box">
+                <label for="mobile">Mobile No</label>
+                <i class="fa fa-phone"></i>
+                <input type="tel" id="mobile" name="mobile" placeholder="Enter your mobile number" required>
+                <div class="error-message" id="mobileError"></div>
+            </div>
+
+            <div class="input-box">
+              <label for="usertype">User Type</label>
+              <i class="fa fa-user-tag"></i>  <!-- Optional: icon for user type -->
+              <select id="usertype" name="usertype" required>
+                  <option value="" disabled selected>Select user type</option>
+                  <option value="donor">Donor</option>
+                  <option value="recipient">Recipient</option>
+              </select>
+              <div class="error-message" id="usertypeError"></div>
+          </div>
+          
+            <div class="input-box">
+                <label for="password">Password</label>
+                <i class="fa fa-lock"></i>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                <span class="toggle-password" onclick="togglePassword('password')">Show</span>
+                <div class="error-message" id="passwordError"></div>
+            </div>
+            <div class="input-box">
+                <label for="confirmPassword">Re-enter Password</label>
+                <i class="fa fa-lock"></i>
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Re-enter your password" required>
+                <span class="toggle-password" onclick="togglePassword('confirmPassword')">Show</span>
+                <div class="error-message" id="confirmPasswordError"></div>
+            </div>
+            <button type="submit" class="btn">Sign In</button>
+        </form>
+        <br> <center><div class="already-user">Already a user? <a href="login page.html">Login</a></div></center>
+    </div>
+
+    <script>
+        function togglePassword(fieldId) {
+            const field = document.getElementById(fieldId);
+            const toggleText = field.nextElementSibling;
+            if (field.type === "password") {
+                field.type = "text";
+                toggleText.textContent = "Hide";
+            } else {
+                field.type = "password";
+                toggleText.textContent = "Show";
+            }
+        }
+    
+        document.getElementById("registerForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+    
+            // Get values
+            const username = document.getElementById("username").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const mobile = document.getElementById("mobile").value.trim();
+            const usertype = document.getElementById("usertype").value.trim();
+            const password = document.getElementById("password").value.trim();
+            const confirmPassword = document.getElementById("confirmPassword").value.trim();
+    
+            // Error elements
+            const usernameError = document.getElementById("usernameError");
+            const emailError = document.getElementById("emailError");
+            const mobileError = document.getElementById("mobileError");
+            const usertypeError = document.getElementById("usertypeError");
+            const passwordError = document.getElementById("passwordError");
+            const confirmPasswordError = document.getElementById("confirmPasswordError");
+    
+            // Reset error messages
+            usernameError.style.display = "none";
+            emailError.style.display = "none";
+            mobileError.style.display = "none";
+            usertypeError.style.display = "none";
+
+            passwordError.style.display = "none";
+            confirmPasswordError.style.display = "none";
+    
+            let valid = true;
+    
+            // Validate username (Only letters)
+            const usernamePattern = /^[A-Za-z]+$/;
+            if (!usernamePattern.test(username)) {
+                usernameError.textContent = "Username must contain only letters.";
+                usernameError.style.display = "block";
+                valid = false;
+            }
+    
+            // Validate email
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                emailError.textContent = "Enter a valid email.";
+                emailError.style.display = "block";
+                valid = false;
+            }
+    
+            // Validate mobile (Exactly 10 digits)
+            const mobilePattern = /^[0-9]{10}$/;
+            if (!mobilePattern.test(mobile)) {
+                mobileError.textContent = "Enter a valid 10-digit mobile number.";
+                mobileError.style.display = "block";
+                valid = false;
+            }
+            
+            if (usertype === "") {
+                 usertypeError.textContent = "Please select a user type.";
+                  usertypeError.style.display = "block";
+                   valid = false;
+                }
+    
+            // Validate password (Minimum 6 characters)
+            if (password.length < 6) {
+                passwordError.textContent = "Password must be at least 6 characters.";
+                passwordError.style.display = "block";
+                valid = false;
+            }
+    
+            // Validate confirm password
+            if (confirmPassword !== password) {
+                confirmPasswordError.textContent = "Passwords do not match.";
+                confirmPasswordError.style.display = "block";
+                valid = false;
+            }
+    
+            if (valid) {
+              const data = { name: username, email, mobile, usertype, password };
+              console.log(data);  // Log the data to check if everything is correct
+              console.log("Sending data to the server:", data);
+              fetch("http://127.0.0.1:5000/register", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(data => {
+    console.log(data); // Log the response to verify
+
+    alert(data.message);  // Show the message from the backend
+    if (data.message.toLowerCase().includes("successful")) {
+        console.log("✅ Registration successful. Redirecting to Type.html...");
+        document.getElementById("registerForm").reset();
+        setTimeout(() => {
+            window.location.href = "login page.html";
+        }, 1500);
+    }
+})
+
+                .catch(error => console.error("Error:", error));
+            }
+        });
+
+    </script>
+    
+</body>
+</html>
