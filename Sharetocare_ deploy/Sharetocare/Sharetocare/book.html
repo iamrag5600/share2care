@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Book and Stationery Donation</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: url('images/bookbg.jpg') no-repeat center center fixed;
+      margin: 0;
+      padding: 20px;
+      background-size: cover;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    .form-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 60px;
+      justify-content: center;
+    }
+
+    .form-box {
+      background: linear-gradient(to right, #ffefda, #ffe4e1);
+      border: 2px solid #d8b4b4;
+      border-radius: 15px;
+      padding: 25px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+
+    .form-box h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: rgb(0, 0, 0);
+    }
+
+    label {
+      font-weight: bold;
+      color: rgb(0, 0, 0);
+      display: block;
+      margin-top: 15px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+      border: none;
+      border-radius: 5px;
+      font-size: 15px;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 25px;
+      background: #28a745;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #218838;
+    }
+
+    @media (max-width: 768px) {
+      .form-container {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+    .back-button {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        z-index: 1000;
+        text-decoration: none;
+        padding: 5px;
+        background-color: rgba(0, 0, 0, 0.3);
+        border-radius: 50%;
+        transition: background 0.3s, transform 0.2s;
+    }
+
+    .back-button:hover {
+        background-color: rgba(0, 0, 0, 0.5);
+        transform: scale(1.1);
+    }
+
+  </style>
+</head>
+<body>
+
+    <a href="donation.html" class="back-button" title="Go Back">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+            <path d="M15 18L9 12L15 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </a>
+    
+
+<h1>Book and Stationery Donation</h1>
+
+<div class="form-container">
+
+  <!-- Book Donation Form -->
+  <div class="form-box">
+    <h2>Donate Books</h2>
+    <label for="fullName">Full Name:</label>
+    <input type="text" id="fullName" placeholder="Enter your name" required>
+    <label for="email">Email:</label>
+    <input type="email" id="email" placeholder="Enter your email" required>
+
+
+    <label for="bookTitle">Book Title:</label>
+    <input type="text" id="bookTitle" placeholder="Enter book title" required />
+
+    <label for="author">Author:</label>
+    <input type="text" id="author" placeholder="Enter author name" />
+
+    <label for="condition">Book Condition:</label>
+    <select id="condition">
+      <option value="new">New</option>
+      <option value="gently-used">Gently Used</option>
+      <option value="used">Used</option>
+    </select>
+
+    <label for="bookAgeGroup">Suitable Age Group:</label>
+    <input type="text" id="bookAgeGroup" placeholder="e.g., 10-15 years" />
+
+    <label for="bookLocation">Pickup Address:</label>
+    <textarea id="bookLocation" placeholder="Enter address"></textarea>
+
+    <button onclick="submitBook()">Donate Book</button>
+  </div>
+
+  <!-- Stationery Donation Form -->
+<div class="form-box">
+    <h2 style="color:rgb(0, 0, 0);">Donate Stationery</h2>
+    <form id="stationeryForm">
+        <label for="fullName">Full Name:</label>
+        <input type="text" id="fullName" name="full_name" required>
+        
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+
+
+      <label for="itemName">Item Name:</label>
+      <input type="text" id="itemName" name="item_name" placeholder="e.g., Pens, Notebooks" required />
+  
+      <label for="quantity">Quantity:</label>
+      <input type="number" id="quantity" name="quantity" placeholder="Enter quantity" required />
+  
+      <label for="stationeryCondition">Item Condition:</label>
+      <select id="stationeryCondition" name="condition">
+        <option value="new">New</option>
+        <option value="gently-used">Gently Used</option>
+      </select>
+  
+      <label for="stationeryAgeGroup">Suitable Age Group:</label>
+      <input type="text" id="stationeryAgeGroup" name="age_group" placeholder="e.g., 5-10 years" />
+  
+      <label for="stationeryLocation">Pickup Address:</label>
+      <textarea id="stationeryLocation" name="location" placeholder="Enter address" required></textarea>
+  
+      <button type="submit">Donate Stationery</button>
+    </form>
+  </div>
+  
+
+<script>
+    // 📘 Book Donation Function
+    // 📘 Book Donation Function
+    function submitBook() {
+  const bookData = {
+    full_name: document.getElementById('fullName').value.trim(),  // ✅ Correct key!
+    email: document.getElementById('email').value.trim(),
+    title: document.getElementById('bookTitle').value.trim(),
+    author: document.getElementById('author').value.trim(),
+    condition: document.getElementById('condition').value,
+    age_group: document.getElementById('bookAgeGroup').value.trim(),
+    location: document.getElementById('bookLocation').value.trim(),
+  };
+
+  console.log("Sending book data:", bookData);
+
+  if (!bookData.title || !bookData.location || !bookData.full_name || !bookData.email) {
+    alert("Please enter book title, pickup address, full name, and email.");
+    return;
+  }
+
+  fetch('http://127.0.0.1:5000/donate-book', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(bookData)
+  })
+  .then(async res => {
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Unknown error occurred");
+    alert(data.message);
+
+    // ✅ Reset form fields
+    document.getElementById('fullName').value = '';
+    document.getElementById('email').value = '';
+    document.getElementById('bookTitle').value = '';
+    document.getElementById('author').value = '';
+    document.getElementById('condition').value = 'new';
+    document.getElementById('bookAgeGroup').value = '';
+    document.getElementById('bookLocation').value = '';
+  })
+  .catch(error => {
+    console.error("Book donation error:", error);
+    alert("Error: " + (error.message || "Server error! Please try again later."));
+  });
+}
+
+document.getElementById("stationeryForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const formData = new FormData(e.target);
+  const data = Object.fromEntries(formData.entries());
+
+  console.log("📦 Sending:", data); // Optional: to confirm it's all correct
+
+  fetch("http://127.0.0.1:5000/donate-stationery", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  })
+  .then(response => response.json())
+  .then(result => {
+    if (result.success) {
+      alert("Stationery donation successful!");
+      e.target.reset();
+    } else {
+      alert("Failed to donate: " + result.message);
+    }
+  })
+  .catch(error => {
+    console.error("Stationery donation error:", error);
+    alert("Something went wrong!");
+  });
+});
+
+  </script>
+  
+  
+
+
+</body>
+</html>
